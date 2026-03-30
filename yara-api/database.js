@@ -8,9 +8,9 @@ const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: 'admin',
   database: 'yara_db',
-  port: 3307, // porta padrao do mysql no xampp
+  port: 3306, // porta padrao do mysql no xampp
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
