@@ -1,30 +1,27 @@
+
 const mysql = require('mysql2/promise');
 
-// configuracao do banco de dados
-// host: onde o banco esta (localhost)
-// user: usuario do mysql (no xampp o padrao e root)
-// password: senha (no xampp o padrao e vazio)
-// database: nome do banco que voce criou
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin',
-  database: 'yara_db',
-  port: 3306, // porta padrao do mysql no xampp
+  host              : '',
+  user              : 'root',
+  password          : 'admin',          // XAMPP padrão não tem senha
+  database          : 'yara_db',
+  port              : 3306,
   waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  connectionLimit   : 10,
+  queueLimit        : 0
 });
 
-async function connectDB() {
-  try {
-    const connection = await pool.getConnection();
-    connection.release();
-    return pool;
-  } catch (err) {
-    console.log('Erro no banco: ' + err.message);
-    return null;
-  }
-}
+// Testa a conexão uma vez quando o servidor inicia
+// e avisa no terminal se algo estiver errado
+pool.getConnection()
+  .then(conn => {
+    console.log('✅ MySQL conectado — yara_db');
+    conn.release();
+  })
+  .catch(err => {
+    console.error('❌ Erro ao conectar no MySQL:', err.message);
+    console.error('   Verifique se o XAMPP está rodando e o banco yara_db foi criado.');
+  });
 
-module.exports = { connectDB };
+module.exports = pool;
